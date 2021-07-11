@@ -11,9 +11,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker[] Locations;
     private Marker[] Friends;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase FB;
+    private TextView locationTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +108,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        myMap.setOnMarkerClickListener(this);
+        FB = FirebaseDatabase.getInstance();
+        LinearLayout i = (LinearLayout)findViewById(R.id.TitleLinearLayout);
+        locationTitle = (TextView)findViewById(R.id.locTitle);
+
+        //myMap.setOnMarkerClickListener(this);
 
     }
 
@@ -114,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
         myMap.getUiSettings().setZoomControlsEnabled(true);
+        myMap.setOnMarkerClickListener(this);
 
     }
 
@@ -212,13 +220,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(getApplicationContext(),"Iwas clicked",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Iwas clicked"+marker.getTag(),Toast.LENGTH_LONG).show();
+        showBottomSheetDialog(marker.getTag()+"");
         return false;
+    }
+    private void showBottomSheetDialog(String id) {
+        Intent goToLoc = new Intent(getApplicationContext(),locationDetails.class);
+        goToLoc.putExtra("id",id);
+        startActivity(goToLoc);
+
     }
 
     public class getLocations extends AsyncTask<Void, Void, Void> {
-
-
         @Override
         protected Void doInBackground(Void... voids) {
             List<String> locationIds = new ArrayList<>();
@@ -256,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             Marker initAMarker = myMap.addMarker(new MarkerOptions()
                                                     .position(initMarker)
                                                     .title(inity.getName()));
+                                            initAMarker.showInfoWindow();
                                             initAMarker.setTag(inity.getLocationId());
 
 

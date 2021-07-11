@@ -1,30 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app2="http://schema.android.com/apk/res/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-<!--fragment to display our maps-->
-    <androidx.fragment.app.FragmentContainerView
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/map"
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="800dp">
 
-<!--search view to search our location-->
-<androidx.appcompat.widget.SearchView
-    android:id="@+id/idSearchView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="#FFFFFF"
-    android:elevation="5dp"
-    android:queryBackground="@android:color/transparent"
-    app:iconifiedByDefault="false"
-    app:queryHint="Search Here" >
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/idSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#FFFFFF"
+            android:elevation="5dp"
+            android:queryBackground="@android:color/transparent"
+            app:iconifiedByDefault="false"
+            app:queryHint="Search Here">
 
-</androidx.appcompat.widget.SearchView>
+        </androidx.appcompat.widget.SearchView>
+        <!--fragment to display our maps-->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="490dp" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_gravity="start"
+        android:layout_marginBottom="0dp"
+        app2:menu="@menu/nav_items"
+        android:background="@color/purple_200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" >
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <!--search view to search our location-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
