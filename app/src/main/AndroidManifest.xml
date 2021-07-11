@@ -26,7 +26,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VSpace"
         android:usesCleartextTraffic="true">
-        <activity android:name=".locationUsersList"></activity>
+        <activity android:name=".myfriends"></activity>
+        <activity android:name=".locationUsersList" />
         <activity android:name=".locationDetails" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

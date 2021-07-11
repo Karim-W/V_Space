@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,6 +51,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sunflower.vspace.Models.LocationMarkerItems;
 
+
+import android.os.Bundle;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +71,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Implement OnMapReadyCallback.
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, ConnectionCallbacks, OnConnectionFailedListener,GoogleMap.OnMarkerClickListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, ConnectionCallbacks, OnConnectionFailedListener,GoogleMap.OnMarkerClickListener, View.OnClickListener {
 
     protected LocationManager locationManager;
     protected LocationListener locationListener;
@@ -81,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FirebaseAuth mAuth;
     private FirebaseDatabase FB;
     private TextView locationTitle;
+    private Button group;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Intent goToAuth = new Intent(getApplicationContext(),Auth.class);
             startActivity(goToAuth);
         }
+
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -111,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FB = FirebaseDatabase.getInstance();
         LinearLayout i = (LinearLayout)findViewById(R.id.TitleLinearLayout);
         locationTitle = (TextView)findViewById(R.id.locTitle);
+        group = (Button) findViewById(R.id.groupbutt);
+        group.setOnClickListener(this);
 
         //myMap.setOnMarkerClickListener(this);
 
@@ -164,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                     myMap.addCircle(new CircleOptions().center(loc).radius(20).strokeColor(Color.WHITE).fillColor(Color.argb(255, 0, 122, 255)));
                     new getLocations().execute();
+                    new getfriends().execute();
                 } catch (Exception e) {}
                 Log.d("TS", "" + location.getLatitude() + "|" + location.getLongitude());
             }
@@ -220,15 +239,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(getApplicationContext(),"Iwas clicked"+marker.getTag(),Toast.LENGTH_LONG).show();
+        if(marker.getTag().toString().startsWith("[user]")){
+            return false;
+        }else{
         showBottomSheetDialog(marker.getTag()+"");
-        return false;
+            return false;
+        }
+
     }
     private void showBottomSheetDialog(String id) {
+        if(!id.startsWith("[user]")){
         Intent goToLoc = new Intent(getApplicationContext(),locationDetails.class);
         goToLoc.putExtra("id",id);
-        startActivity(goToLoc);
+        startActivity(goToLoc);}
 
+    }
+    public void gotofirends(){
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent gotof = new Intent(getApplicationContext(),myfriends.class);
+        gotof.putExtra("ln",myLongitude);
+        gotof.putExtra("la",myLatitude);
+        startActivity(gotof);
     }
 
     public class getLocations extends AsyncTask<Void, Void, Void> {
@@ -273,6 +308,75 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             initAMarker.setTag(inity.getLocationId());
 
 
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError error) {
+
+                                        }
+                                    });
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            Log.d("GGGGG", error.getMessage());
+                        }
+                    });
+            queue.add(jsonObjectRequest);
+            return null;
+        }
+
+
+
+    }
+    public class getfriends extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            List<String> fIds = new ArrayList<>();
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = "https://vspaceapi.herokuapp.com/v2/friends/near?userid=" + mAuth.getCurrentUser().getUid()+"&Long="+myLongitude+"&Lat="+myLatitude;
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            String f1 = response.toString();
+                            try {
+                                JSONArray lwhy = response.getJSONArray("User-Ids");
+                                JSONObject temp;
+                                for (int i = 0; i < lwhy.length(); i++) {
+                                    temp = lwhy.getJSONObject(i);
+                                    fIds.add(temp.getString("Id"));
+                                }
+                                Log.d("daasd", "hi");
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference myRef =database.getReference().child("Users");
+                                Log.d("Testing: ", String.valueOf(fIds.size()));
+                                for (int i = 0; i < fIds.size(); i++) {
+                                    String id = fIds.get(i);
+                                    myRef.child(fIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot snapshot) {
+                                            LocationMarkerItems inity = new LocationMarkerItems(id,
+                                                    snapshot.child("Full Name").getValue(String.class),
+                                                    snapshot.child("Lat").getValue(Float.class),
+                                                    snapshot.child("Long").getValue(Float.class));
+                                            nearbyLocs.add(inity);
+                                            LatLng initMarker = new LatLng(inity.getLat(), inity.getLong());
+
+                                            Marker initAMarker = myMap.addMarker(new MarkerOptions()
+                                                    .position(initMarker)
+                                                    .title(inity.getName()));
+                                            initAMarker.showInfoWindow();
+                                            initAMarker.setTag("[user]"+inity.getLocationId());
                                         }
 
                                         @Override

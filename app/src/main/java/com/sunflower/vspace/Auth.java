@@ -42,6 +42,27 @@ public class Auth extends AppCompatActivity implements View.OnClickListener {
             Intent goToRegProfileSetup = new Intent(getApplicationContext(),RegProfileSetup.class);
             startActivity(goToRegProfileSetup);
         }
+        signin();
+    }
+
+    public void signin(){
+        mAuth.signInWithEmailAndPassword("karim.wael@gmail.com", "123456")
+                .addOnCompleteListener(this, task -> {
+                    Toast.makeText(this,"ImHEREE",Toast.LENGTH_LONG).show();
+                    Log.d("hi hello", "signInWithEmail:success");
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("TAG", "signInWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Intent goToMain = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(goToMain);
+//                                    updateUI(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("TAG", "signInWithEmail:failure", task.getException());
+
+//                                    updateUI(null);
+                    }});
     }
 
     @Override

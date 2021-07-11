@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:app2="http://schema.android.com/apk/res/res-auto"
@@ -8,45 +8,56 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="800dp">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/relativeLayout"-->
+<!--        android:layout_width="411dp"-->
+<!--        android:layout_height="791dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/nav_view">-->
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/idSearchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="#FFFFFF"
-            android:elevation="5dp"
-            android:queryBackground="@android:color/transparent"
-            app:iconifiedByDefault="false"
-            app:queryHint="Search Here">
-
-        </androidx.appcompat.widget.SearchView>
         <!--fragment to display our maps-->
-        <androidx.fragment.app.FragmentContainerView
+
+    <androidx.fragment.app.FragmentContainerView
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="490dp" />
+            android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+    <Button
+        android:id="@+id/groupbutt"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="350dp"
+        android:layout_weight="1"
+        app:icon="@drawable/ic_baseline_group_24"
+        app:iconTint="#FFFFFF" />
+</RelativeLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_gravity="start"
-        android:layout_marginBottom="0dp"
-        app2:menu="@menu/nav_items"
-        android:background="@color/purple_200"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" >
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/navigation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="46dp"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:layout_marginBottom="0dp"-->
+<!--        app2:menu="@menu/nav_items"-->
+<!--        android:background="@color/purple_200"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        tools:layout_editor_absoluteX="0dp" >-->
+<!--    </com.google.android.material.bottomnavigation.BottomNavigationView>-->
 
-    <!--search view to search our location-->
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/nav_view"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="0dp"-->
+<!--        android:layout_marginEnd="0dp"-->
+<!--        android:background="?android:attr/windowBackground"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:menu="@menu/nav_items" >-->
+
+<!--    </com.google.android.material.bottomnavigation.BottomNavigationView>-->
+<!--    &lt;!&ndash;search view to search our location&ndash;&gt;-->
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--</RelativeLayout>-->

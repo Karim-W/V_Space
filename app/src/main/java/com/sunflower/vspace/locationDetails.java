@@ -64,6 +64,7 @@ public class locationDetails extends AppCompatActivity implements View.OnClickLi
     private String locationBio;
     private String locaitonLink;
     private String locaitonSocial;
+    private String locationRev;
     private String imgUrl;
     private String Id;
     private List<String> frensId = new ArrayList<String>();
@@ -96,6 +97,7 @@ public class locationDetails extends AppCompatActivity implements View.OnClickLi
                 locationBio = snapshot.child("Bio").getValue(String.class);
                 locaitonLink = snapshot.child("Link").getValue(String.class);
                 locaitonSocial = snapshot.child("Social").getValue(String.class);
+                locationRev =  snapshot.child("Rev").getValue(String.class);
                 imgUrl = snapshot.child("Img").getValue(String.class);
                 updateView();
             }
@@ -233,6 +235,10 @@ public class locationDetails extends AppCompatActivity implements View.OnClickLi
             startActivity(goToLocList);
         }else if(id==R.id.Checkin){
             Check_in();
+        }else if(id==R.id.locRev){
+            Uri uriUrl = Uri.parse(locationRev);
+            Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+            startActivity(launchBrowser);
         }
     }
 

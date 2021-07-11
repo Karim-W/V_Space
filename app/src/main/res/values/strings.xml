@@ -10,4 +10,7 @@
     <string name="RegisterButtonLabel">Register</string>
     <string name="goToLogin"><u>Already Have an Account? Click Here to Login</u></string>
     <string name="SkipLabel">Skip</string>
+    <string name="title_home">Around Me</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">My Friends</string>
 </resources>
