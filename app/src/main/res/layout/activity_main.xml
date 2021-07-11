@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<!--fragment to display our maps-->
+    <androidx.fragment.app.FragmentContainerView
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+<!--search view to search our location-->
+<androidx.appcompat.widget.SearchView
+    android:id="@+id/idSearchView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="#FFFFFF"
+    android:elevation="5dp"
+    android:queryBackground="@android:color/transparent"
+    app:iconifiedByDefault="false"
+    app:queryHint="Search Here" >
+
+</androidx.appcompat.widget.SearchView>
+
+</RelativeLayout>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">vSpace</string>
+    <string name="emailLabel">E-mail:</string>
+    <string name="passLabel">Password:</string>
+    <string name="LoginButtonLabel">Login</string>
+    <string name="RegisterLogo"> <u>Need an Account? Click here to Sign Up. </u></string>
+    <string name="FullNameLabel">Full Name</string>
+    <string name="ConfirmPass">Confirm Password:</string>
+    <string name="phone">Phone</string>
+    <string name="RegisterButtonLabel">Register</string>
+    <string name="goToLogin"><u>Already Have an Account? Click Here to Login</u></string>
+    <string name="SkipLabel">Skip</string>
+</resources>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "22473099347",
+    "firebase_url": "https://vspace-c547d-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "vspace-c547d",
+    "storage_bucket": "vspace-c547d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22473099347:android:24849f3a65f14b3ead1ea6",
+        "android_client_info": {
+          "package_name": "com.sunflower.vspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22473099347-majt3j6qciug8fg53s9mvealuv4almau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL0bPSV4DGGSjT9lZRScAonsVPeUQKoXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22473099347-majt3j6qciug8fg53s9mvealuv4almau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
