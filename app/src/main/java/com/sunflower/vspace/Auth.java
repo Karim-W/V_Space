@@ -38,15 +38,10 @@ public class Auth extends AppCompatActivity implements View.OnClickListener {
         LoginButton.setBackgroundColor(Color.GRAY);
         LoginButton.setTextColor(Color.WHITE);
         LoginButton.setOnClickListener(this);
-        if(mAuth.getCurrentUser()==null){
-            Intent goToRegProfileSetup = new Intent(getApplicationContext(),RegProfileSetup.class);
-            startActivity(goToRegProfileSetup);
-        }
-        signin();
     }
 
     public void signin(){
-        mAuth.signInWithEmailAndPassword("karim.wael@gmail.com", "123456")
+        mAuth.signInWithEmailAndPassword("testacc@vspace.com", "testest")
                 .addOnCompleteListener(this, task -> {
                     Toast.makeText(this,"ImHEREE",Toast.LENGTH_LONG).show();
                     Log.d("hi hello", "signInWithEmail:success");

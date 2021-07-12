@@ -102,33 +102,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+
         try {
             mAuth = FirebaseAuth.getInstance();
-            mAuth.getCurrentUser();
+            String uid=mAuth.getCurrentUser().getUid();
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+
+            locationRequest = LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setInterval(UPDATE_INTERVAL)
+                    .setFastestInterval(FASTEST_UPDATE_INTERVAL);
+
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+            FB = FirebaseDatabase.getInstance();
+            LinearLayout i = (LinearLayout)findViewById(R.id.TitleLinearLayout);
+            locationTitle = (TextView)findViewById(R.id.locTitle);
+            group = (Button) findViewById(R.id.groupbutt);
+            group.setOnClickListener(this);
         }catch (Exception e){
             Intent goToAuth = new Intent(getApplicationContext(),Auth.class);
             startActivity(goToAuth);
         }
 
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
 
-        locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(UPDATE_INTERVAL)
-                .setFastestInterval(FASTEST_UPDATE_INTERVAL);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        FB = FirebaseDatabase.getInstance();
-        LinearLayout i = (LinearLayout)findViewById(R.id.TitleLinearLayout);
-        locationTitle = (TextView)findViewById(R.id.locTitle);
-        group = (Button) findViewById(R.id.groupbutt);
-        group.setOnClickListener(this);
 
         //myMap.setOnMarkerClickListener(this);
 
@@ -137,9 +139,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        myMap = googleMap;
-        myMap.getUiSettings().setZoomControlsEnabled(true);
-        myMap.setOnMarkerClickListener(this);
+        try {
+            if(mAuth.getCurrentUser().getUid()!=null){
+                myMap = googleMap;
+                myMap.getUiSettings().setZoomControlsEnabled(true);
+                myMap.setOnMarkerClickListener(this);
+            }
+
+        }catch (Exception e){
+
+        }
 
     }
 
@@ -212,21 +221,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onStart() { //called before on resume – corresponds to onStop
         super.onStart();
-        googleApiClient.connect(); //connect to google play services not GPS!
+        try {
+
+            googleApiClient.connect(); //connect to google play services not GPS!
+        }catch (Exception e){}
     }
 
     @Override
     protected void onPause() {
-        if (googleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(
-                    googleApiClient, this);
+        try{
+            if (googleApiClient.isConnected()) {
+                LocationServices.FusedLocationApi.removeLocationUpdates(
+                        googleApiClient, this);
+            }
+        }
+        catch(Exception e){
+
         }
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        googleApiClient.disconnect();
+        try {
+
+            googleApiClient.disconnect();
+        }catch (Exception e){}
         super.onStop();
     }
 
