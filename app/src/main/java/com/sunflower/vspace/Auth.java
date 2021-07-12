@@ -69,7 +69,7 @@ public class Auth extends AppCompatActivity implements View.OnClickListener {
 //            if(emailString.equals("")||passString.equals("")){
 //
 //            }else{
-            mAuth.signInWithEmailAndPassword("karim.wael@gmail.com", "123456")
+            mAuth.signInWithEmailAndPassword("testacc@vspace.com", "testtest")
                         .addOnCompleteListener(this, task -> {
                             Toast.makeText(this,"ImHEREE",Toast.LENGTH_LONG).show();
                             Log.d("hi hello", "signInWithEmail:success");
